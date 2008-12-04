@@ -1,0 +1,7 @@
+*.suo
+*.swp
+*.user
+_ReSharper.*
+Build
+bin
+obj
