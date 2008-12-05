@@ -29,14 +29,25 @@ namespace Machine.Hancock
       map[assembly.FullName] = incomingAssembly; 
       foreach (AssemblyName name in assembly.GetReferencedAssemblies())
       {
-        Assembly referenced;
+        Assembly referenced = null;
         try
         {
           referenced = Assembly.ReflectionOnlyLoad(name.ToString());
         }
         catch (Exception error)
         {
-          referenced = Assembly.ReflectionOnlyLoadFrom(incomingAssembly.Path.ChangeFileName(name.Name + ".dll").AsString);
+          foreach (string fileName in new [] { name.Name + ".dll", name.Name + ".exe" })
+          {
+            Pathname path = incomingAssembly.Path.ChangeFileName(fileName);
+            if (path.IsFile)
+            {
+              referenced = Assembly.ReflectionOnlyLoadFrom(path.AsString);
+            }
+          }
+        }
+        if (referenced == null)
+        {
+          throw new InvalidOperationException();
         }
         incomingAssembly.Reference(CreateDependencyGraph(map, referenced));
       }
