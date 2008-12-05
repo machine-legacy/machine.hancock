@@ -5,11 +5,11 @@ namespace Machine.Hancock
 {
   public class Assembler
   {
-    public AssembledAssembly Assemble(DisassembledAssembly assembly, Pathname outputDirectory, Pathname key)
+    public AssembledAssembly Assemble(DisassembledAssembly assembly, Configuration configuration)
     {
       ProcessRunner runner = new ProcessRunner();
-      Pathname binaryPath = assembly.Path.ChangeDirectory(outputDirectory).ChangeExtension(assembly.Type.ToExtension());
-      runner.Run(Program.Framework + @"\ILASM.exe", assembly.Path.AsString, "/DEBUG", assembly.Type.ToIlAsmArgument(), "/KEY:" + key.AsString);
+      Pathname binaryPath = assembly.Path.ChangeDirectory(configuration.OutputDirectory).ChangeExtension(assembly.Type.ToExtension());
+      runner.Run(configuration.Framework + @"\ILASM.exe", assembly.Path.AsString, "/DEBUG", assembly.Type.ToIlAsmArgument(), "/KEY:" + configuration.KeyFile.AsString);
       PublicKeyToken publicKeyToken = ReadAssemblyPublicKeyToken(binaryPath);
       return new AssembledAssembly(binaryPath, publicKeyToken);
     }

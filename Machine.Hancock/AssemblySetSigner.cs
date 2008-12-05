@@ -20,15 +20,15 @@ namespace Machine.Hancock
       _publicKeyTokenProvider = publicKeyTokenProvider;
     }
 
-    public void SignAssemblies(IEnumerable<Pathname> paths, Pathname outputDirectory, Pathname key)
+    public void SignAssemblies(IEnumerable<Pathname> paths, Configuration configuration)
     {
       foreach (Pathname path in paths)
       {
         IncomingAssembly incoming = new IncomingAssembly(path);
-        DisassembledAssembly disassembledAssembly = _disassembler.Disassemble(incoming, outputDirectory);
+        DisassembledAssembly disassembledAssembly = _disassembler.Disassemble(incoming, configuration);
         DisassembledIl il = _ilReader.Read(disassembledAssembly.Path);
         _ilWriter.Write(il, disassembledAssembly.Path);
-        AssembledAssembly assembledAssembly = _assembler.Assemble(disassembledAssembly, outputDirectory, key);
+        AssembledAssembly assembledAssembly = _assembler.Assemble(disassembledAssembly, configuration);
         _publicKeyTokenProvider.Add(assembledAssembly);
       }
     }

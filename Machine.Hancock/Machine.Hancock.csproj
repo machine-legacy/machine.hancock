@@ -51,6 +51,7 @@
     <Compile Include="Assembler.cs" />
     <Compile Include="AssemblySetSigner.cs" />
     <Compile Include="AssemblyType.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Dependency.cs" />
     <Compile Include="DisassembledAssembly.cs" />
     <Compile Include="DisassembledIl.cs" />
