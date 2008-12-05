@@ -24,11 +24,15 @@ namespace Machine.Hancock
     {
       foreach (IncomingAssembly incoming in assemblies)
       {
+        Console.WriteLine("Disassembling " + incoming.Path.FileName);
         DisassembledAssembly disassembledAssembly = _disassembler.Disassemble(incoming, configuration);
+        Console.WriteLine("Transforming");
         DisassembledIl il = _ilReader.Read(disassembledAssembly.Path);
         _ilWriter.Write(il, disassembledAssembly.Path);
+        Console.WriteLine("Assembling");
         AssembledAssembly assembledAssembly = _assembler.Assemble(disassembledAssembly, configuration);
         _publicKeyTokenProvider.Add(assembledAssembly);
+        Console.WriteLine("Done with " + incoming.Path.FileName);
       }
     }
   }

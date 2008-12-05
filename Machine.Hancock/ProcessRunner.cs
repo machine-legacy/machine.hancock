@@ -9,6 +9,8 @@ namespace Machine.Hancock
     {
       ProcessStartInfo startInfo = new ProcessStartInfo(path);
       startInfo.Arguments = args.Join(" ");
+      startInfo.UseShellExecute = false;
+      startInfo.CreateNoWindow = true;
       Process process = Process.Start(startInfo);
       if (process == null)
       {
