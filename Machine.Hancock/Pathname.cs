@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace Machine.Hancock
 {
@@ -42,6 +43,11 @@ namespace Machine.Hancock
       get { return _value; }
     }
 
+    public Pathname ChangeFileName(string fileName)
+    {
+      return new Pathname(Path.Combine(Path.GetDirectoryName(_value), fileName));
+    }
+
     public Pathname ChangeDirectory(Pathname directory)
     {
       return directory.Join(this.FileName);
@@ -55,6 +61,13 @@ namespace Machine.Hancock
     public override string ToString()
     {
       return _value;
+    }
+  }
+  public static class PathnameHelpers
+  {
+    public static Pathname Pathname(this Assembly assembly)
+    {
+      return new Pathname(assembly.Location);
     }
   }
 }

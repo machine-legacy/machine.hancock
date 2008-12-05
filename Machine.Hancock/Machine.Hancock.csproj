@@ -59,6 +59,7 @@
     <Compile Include="IlReader.cs" />
     <Compile Include="IlWriter.cs" />
     <Compile Include="IncomingAssembly.cs" />
+    <Compile Include="IncomingAssemblyFactory.cs" />
     <Compile Include="Pathname.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Program.cs" />
