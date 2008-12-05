@@ -16,6 +16,10 @@ namespace Machine.Hancock
       IncomingAssemblyFactory incomingAssemblyFactory = new IncomingAssemblyFactory();
       IncomingAssembly assembly = incomingAssemblyFactory.CreateDependencyGraph(application);
       ICollection<IncomingAssembly> unsigned = assembly.UnsignedAssemblies;
+      foreach (IncomingAssembly toBeCopied in assembly.UnGacedAssemblies)
+      {
+        Console.WriteLine("Copying " + toBeCopied.Path.FileName);
+      }
       foreach (IncomingAssembly toBeSigned in unsigned)
       {
         Console.WriteLine("Signing " + toBeSigned.Path.FileName);
@@ -23,7 +27,6 @@ namespace Machine.Hancock
       PublicKeyTokenProvider publicKeyTokenProvider = new PublicKeyTokenProvider();
       AssemblySetSigner signer = new AssemblySetSigner(new Assembler(), new Disassembler(), new IlReader(), new IlWriter(publicKeyTokenProvider), publicKeyTokenProvider);
       signer.SignAssemblies(unsigned, configuration);
-      Console.ReadKey();
     }
   }
 }

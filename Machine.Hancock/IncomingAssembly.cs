@@ -7,6 +7,7 @@ namespace Machine.Hancock
   {
     readonly Pathname _path;
     readonly bool _isSigned;
+    readonly bool _inGac;
     readonly List<IncomingAssembly> _referencedAssemblies = new List<IncomingAssembly>();
 
     public Pathname Path
@@ -26,9 +27,10 @@ namespace Machine.Hancock
       }
     }
 
-    public IncomingAssembly(Pathname path, bool isSigned)
+    public IncomingAssembly(Pathname path, bool isSigned, bool inGac)
     {
       _path = path;
+      _inGac = inGac;
       _isSigned = isSigned;
     }
 
@@ -47,18 +49,29 @@ namespace Machine.Hancock
       return "Incoming<" + _path + ", " + _isSigned + ">";
     }
 
+    public ICollection<IncomingAssembly> UnGacedAssemblies
+    {
+      get
+      {
+        List<IncomingAssembly> visited = new List<IncomingAssembly>();
+        List<IncomingAssembly> unsigned = new List<IncomingAssembly>();
+        CollectAssemblies(visited, unsigned, incoming => !incoming._inGac);
+        return unsigned;
+      }
+    }
+
     public ICollection<IncomingAssembly> UnsignedAssemblies
     {
       get
       {
         List<IncomingAssembly> visited = new List<IncomingAssembly>();
         List<IncomingAssembly> unsigned = new List<IncomingAssembly>();
-        ListUnsignedAssemblies(visited, unsigned);
+        CollectAssemblies(visited, unsigned, incoming => !incoming._isSigned);
         return unsigned;
       }
     }
 
-    private void ListUnsignedAssemblies(ICollection<IncomingAssembly> visited, ICollection<IncomingAssembly> unsigned)
+    private void CollectAssemblies(ICollection<IncomingAssembly> visited, ICollection<IncomingAssembly> collected, Predicate<IncomingAssembly> condition)
     {
       if (visited.Contains(this))
       {
@@ -67,11 +80,11 @@ namespace Machine.Hancock
       visited.Add(this);
       foreach (IncomingAssembly referenced in _referencedAssemblies)
       {
-        referenced.ListUnsignedAssemblies(visited, unsigned);
+        referenced.CollectAssemblies(visited, collected, condition);
       }
-      if (!_isSigned)
+      if (condition(this))
       {
-        unsigned.Add(this);
+        collected.Add(this);
       }
     }
   }

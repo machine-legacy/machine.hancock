@@ -23,7 +23,9 @@ namespace Machine.Hancock
       {
         return map[assembly.FullName];
       }
-      IncomingAssembly incomingAssembly = new IncomingAssembly(assembly.Pathname(), assembly.GetName().GetPublicKeyToken().Length > 0);
+      byte[] publicKeyToken = assembly.GetName().GetPublicKeyToken();
+      bool inGac = assembly.GlobalAssemblyCache;
+      IncomingAssembly incomingAssembly = new IncomingAssembly(assembly.Pathname(), publicKeyToken.Length > 0, inGac);
       map[assembly.FullName] = incomingAssembly; 
       foreach (AssemblyName name in assembly.GetReferencedAssemblies())
       {
