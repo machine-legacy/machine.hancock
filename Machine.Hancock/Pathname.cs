@@ -43,6 +43,16 @@ namespace Machine.Hancock
       get { return _value; }
     }
 
+    public bool IsFile
+    {
+      get { return File.Exists(_value); }
+    }
+
+    public bool IsDirectory
+    {
+      get { return System.IO.Directory.Exists(_value); }
+    }
+
     public Pathname ChangeFileName(string fileName)
     {
       return new Pathname(Path.Combine(Path.GetDirectoryName(_value), fileName));

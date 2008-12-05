@@ -7,13 +7,15 @@ namespace Machine.Hancock
   {
     public static void Main(string[] args)
     {
-      Configuration configuration = new Configuration(
-        new Pathname(@"E:\Source\Machine.Mta\Build\Debug\Hancock"),
-        new Pathname(@"E:\Source\Machine.Hancock\Machine.Hancock\Hancock.snk")
-      );
-      Pathname application = new Pathname(@"E:\Source\MessagingExample\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe");
+      CommandLine commandLine = new CommandLine(args);
+      if (!commandLine.IsValid())
+      {
+        Environment.Exit(1);
+        return;
+      }
+      Configuration configuration = commandLine.ToConfiguration();
       IncomingAssemblyFactory incomingAssemblyFactory = new IncomingAssemblyFactory();
-      IncomingAssembly assembly = incomingAssemblyFactory.CreateDependencyGraph(application);
+      IncomingAssembly assembly = incomingAssemblyFactory.CreateDependencyGraph(commandLine.RootAssembly);
       ICollection<IncomingAssembly> unsigned = assembly.UnsignedAssemblies;
       foreach (IncomingAssembly toBeCopied in assembly.UnGacedAssemblies)
       {
