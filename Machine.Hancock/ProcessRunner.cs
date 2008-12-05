@@ -5,9 +5,9 @@ namespace Machine.Hancock
 {
   public class ProcessRunner
   {
-    public void Run(string path, params string[] args)
+    public void Run(Pathname path, params string[] args)
     {
-      ProcessStartInfo startInfo = new ProcessStartInfo(path);
+      ProcessStartInfo startInfo = new ProcessStartInfo(path.AsString);
       startInfo.Arguments = args.Join(" ");
       startInfo.UseShellExecute = false;
       startInfo.CreateNoWindow = true;

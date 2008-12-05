@@ -18,14 +18,24 @@ namespace Machine.Hancock
       get { return _keyFile; }
     }
 
-    public string Framework
+    private static Pathname Framework
     {
-      get { return @"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727"; }
+      get { return new Pathname(@"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727"); }
     }
     
-    public string SDK
+    private static Pathname SDK
     {
-      get { return @"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin"; }
+      get { return new Pathname(@"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin"); }
+    }
+
+    public Pathname IlDasmPath
+    {
+      get { return SDK.Join(@"ILDASM.exe"); }
+    }
+
+    public Pathname IlAsmPath
+    {
+      get { return Framework.Join(@"ILASM.exe"); }
     }
 
     public Configuration(Pathname outputDirectory, Pathname keyFile)
