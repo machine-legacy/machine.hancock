@@ -18,12 +18,12 @@ namespace Machine.Hancock
       {
         using (TextReader reader = il.OpenStream())
         {
-          AssemblyHeaderParser parser = null;
+          AssemblyExternParser parser = null;
           foreach (string line in reader.Lines())
           {
             if (line.StartsWith(".assembly extern"))
             {
-              parser = new AssemblyHeaderParser(_publicKeyTokenProvider, line.Split(' ')[2]);
+              parser = new AssemblyExternParser(_publicKeyTokenProvider, line.Split(' ')[2]);
             }
             if (parser != null)
             {
@@ -38,13 +38,13 @@ namespace Machine.Hancock
       }
     }
 
-    class AssemblyHeaderParser
+    class AssemblyExternParser
     {
       readonly PublicKeyTokenProvider _publicKeyTokenProvider;
       readonly string _name;
       bool _isSigned;
 
-      public AssemblyHeaderParser(PublicKeyTokenProvider publicKeyTokenProvider, string name)
+      public AssemblyExternParser(PublicKeyTokenProvider publicKeyTokenProvider, string name)
       {
         _name = name;
         _publicKeyTokenProvider = publicKeyTokenProvider;
